@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deeper Crawlspace - Almond Water</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="backrooms.js"></script>
+</head>
+<body class="flicker">
+<div class="vignette"></div>
+
+<div class="container">
+    <h1 data-ghost="SWEET BOTTLE">Deeper Crawlspace</h1>
+    <img src="assets/sweet-bottle.webp" alt="A dusty collapsed ventilation duct with one unlabelled bottle of milky liquid glowing warmly" class="room-image" decoding="async">
+
+    <p>
+        The duct slopes downward, forcing you to slide headfirst. The walls contract, squeezing your chest tight.
+        Every screw head looks like an eye because fear is a lazy designer.
+    </p>
+    <p id="water-description">
+        Near a collapsed metal joint, you find a plastic bottle covered in gray dust. It is filled with a sweet-smelling, milky fluid:
+        <span class="glow-word">Almond Water</span>. It is the only thing that can keep the voices and the screen distortion away.
+    </p>
+
+    <div class="sigil-lock">
+        SUPPLY WARNING: comfort restores sanity, but dependency leaves fingerprints. Use the bottle; do not make it a shrine.
+    </div>
+
+    <div class="choices" id="pickup-area" style="margin-top: 30px; text-align: center;">
+        <a href="#" id="pickup-water" class="key-item">&gt; Grab the Almond Water &lt;</a>
+    </div>
+
+    <div class="choices">
+        <a href="vent.html" data-tag="back">&gt; Squeeze backward to the vent intersection</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const waterBtn = document.getElementById('pickup-water');
+        const desc = document.getElementById('water-description');
+        const pickupArea = document.getElementById('pickup-area');
+
+        if (hasInventoryItem('Almond Water')) {
+            desc.innerText = "The metal joint is empty. You've already taken the bottle of Almond Water.";
+            pickupArea.style.display = 'none';
+        }
+
+        waterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            playPickupSFX();
+            addInventoryItem('Almond Water');
+            desc.innerText = "You pocket the dust-covered bottle. Its sweet scent gives you a tiny spark of comfort in this metal grave.";
+            pickupArea.style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>

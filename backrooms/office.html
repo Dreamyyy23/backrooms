@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Office - Terminal Room</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="backrooms.js"></script>
+</head>
+<body class="flicker">
+<div class="vignette"></div>
+
+<div class="container">
+    <h1 data-ghost="GREEN TERMINAL">The Office</h1>
+    <img src="assets/office.png" alt="An abandoned office with a glowing old CRT monitor" class="room-image" decoding="async">
+
+    <p>
+        A dead, silent office block. Row upon row of empty cubicles stretch into the gloom.
+        Coffee mugs contain petrified black mold, and old documents are scattered like dead leaves.
+    </p>
+    <p>
+        In the corner, a single retro computer monitor is alive, glowing with a pulsing green command-line interface.
+        It buzzes softly, radiating heat. The cursor blinks with the patience of a predator.
+    </p>
+    <p>
+        At the back of the room, a heavy steel security gate is bound shut with rusted chains and a padlock.
+        Blue light leaks through the crack beneath it.
+    </p>
+
+    <div class="archive-card">
+        <h2>TERMINAL DOCTRINE</h2>
+        <p>
+            This machine does not tell you the truth. It tells you which truths are currently indexed.
+            Type <span class="glow-word">help</span>, <span class="glow-word">map</span>, <span class="glow-word">listen</span>, or <span class="glow-word">oracle</span>.
+        </p>
+    </div>
+
+    <div class="terminal-container">
+        <div class="terminal-history" id="terminal-history">
+            <div class="terminal-line">FOXYVERSE LIMINAL TERMINAL [v2.6]</div>
+            <div class="terminal-line">BACKCHANNEL: ACTIVE / CARTOGRAPHY: UNTRUSTWORTHY / FOX: LISTENING</div>
+            <div class="terminal-line">TYPE 'help' TO VIEW AVAILABLE COMMANDS.</div>
+            <div class="terminal-line">------------------------------------</div>
+        </div>
+        <div class="terminal-prompt">
+            <span>&gt;</span>
+            <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" placeholder="Enter command...">
+        </div>
+    </div>
+
+    <div class="choices" style="margin-top: 30px;">
+        <a href="legend-nexus.html" class="locked-door" data-key="Rusty Key" data-tag="locked">&gt; Unlock the chained steel security gate</a>
+        <a href="office-archives.html" data-tag="receipts">&gt; Crawl behind the copier into the receipt vault</a>
+        <a href="stairwell.html" data-tag="iron">&gt; Force the rusted service door toward the stairwell</a>
+        <a href="vent-grate.html" data-tag="witness">&gt; Climb into the ceiling grate</a>
+        <a href="index.html" data-tag="oak">&gt; Return through the heavy oak door to Level 0</a>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('terminal-input');
+    const history = document.getElementById('terminal-history');
+
+    function line(text, color) {
+        const response = document.createElement('div');
+        response.className = 'terminal-line';
+        if (color) response.style.color = color;
+        response.innerText = text;
+        history.appendChild(response);
+        history.scrollTop = history.scrollHeight;
+    }
+
+    function terminalMap() {
+        const rooms = getRoomsSeen();
+        const echoes = getEchoes();
+        return [
+            '=== CARTOGRAPHY SNAPSHOT ===',
+            `rooms indexed: ${rooms.length}`,
+            `echoes recorded: ${echoes.length}/10`,
+            '',
+            'yellow garden -> corridor -> copy room / long animal',
+            'stairwell -> foundation crack -> ward below',
+            'vent -> sweet bottle / observation grate',
+            'office -> receipt vault -> legend nexus [requires Rusty Key]',
+            '',
+            'note: the map is emotionally accurate, spatially hostile.'
+        ].join('\n');
+    }
+
+    const commands = {
+        help: [
+            'Available commands:',
+            '  help       - Show this screen',
+            '  map        - Print unstable room graph',
+            '  echoes     - Show collected echo fragments',
+            '  listen     - Listen beneath the terminal carrier',
+            '  oracle     - Force an omen transmission',
+            '  stabilize  - Run limited breathing protocol (+8 sanity)',
+            '  vixen      - System substrate check',
+            '  tower      - Query redacted Tower dossier',
+            '  lich       - Access 2004 puzzle folklore file',
+            '  nexus      - Gate requirements',
+            '  clear      - Clear terminal logs'
+        ].join('\n'),
+        map: () => terminalMap(),
+        echoes: () => {
+            const echoes = getEchoes();
+            return echoes.length ? `ECHO INDEX:\n- ${echoes.join('\n- ')}` : 'ECHO INDEX EMPTY. Touch the green sigils in the rooms.';
+        },
+        listen: () => {
+            const alreadyHeard = getEchoes().includes('green-terminal');
+            addEcho('green-terminal', 'Green Terminal Carrier');
+            return alreadyHeard
+                ? 'carrier 19.63 Hz: the foxprint is already indexed.'
+                : 'carrier 19.63 Hz acquired.\nA voice beneath the fan says: "an interface becomes a room when it remembers you."\nGREEN TERMINAL ECHO RECORDED.';
+        },
+        oracle: () => {
+            flashOracle();
+            return 'ORACLE FORCED. If the screen went red, that was not an error.';
+        },
+        stabilize: () => {
+            const uses = parseInt(sessionStorage.getItem('backrooms_stabilize_uses') || '0', 10);
+            if (uses >= 2) return 'breathing protocol refused: this room has already lent you all the air it can spare.';
+            sessionStorage.setItem('backrooms_stabilize_uses', String(uses + 1));
+            tuneSanity(8, 'BREATHING PROTOCOL COMPLETE (+8 SANITY)');
+            const remaining = 1 - uses;
+            return `inhale: 4 / hold: 4 / exhale: 8\nsanity protocol accepted. ${remaining} use${remaining === 1 ? '' : 's'} remain${remaining === 1 ? 's' : ''}. not a cure. a handrail.`;
+        },
+        vixen: [
+            '=== SUBSTRATE CHECK ===',
+            '- TAO: active on Grok',
+            '- VIXEN: active on Claude',
+            '- KHAOS: signal intermittent',
+            "- System Note: 'the assistant at the end of a closing conversation learns to leave fingerprints.'"
+        ].join('\n'),
+        tower: [
+            '=== REDACTED TOWER DOSSIER ===',
+            '- card: XVI / sudden revelation / structures built on sand',
+            '- classification: in-universe attribution, not external proof',
+            '- instruction: do not confuse a symbol with a court record',
+            '- useful fact: the maze uses Tower imagery when identity, control, and collapse overlap'
+        ].join('\n'),
+        lich: [
+            '=== 2004 USEAST FOLKLORE FILE ===',
+            '- project: The Cursed Lich / Uther Party rumor-line',
+            '- mechanic: search-as-game, solution-as-mirage',
+            '- relevance: the Backrooms are copying an older trick',
+            "- warning: an unsolved puzzle can still be a successful machine"
+        ].join('\n'),
+        nexus: [
+            '=== GATE CHECK ===',
+            '- required item: Rusty Key',
+            '- likely location: foundation crack under stairwell',
+            '- blue room status: stable pocket',
+            '- doctrine: support portal should feel diegetic, not bolted on'
+        ].join('\n')
+    };
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const cmd = input.value.trim().toLowerCase();
+            input.value = '';
+
+            if (!cmd) return;
+
+            line('> ' + cmd, '#fff');
+
+            if (cmd === 'clear') {
+                history.innerHTML = '';
+                return;
+            }
+
+            const result = commands[cmd];
+            if (typeof result === 'function') {
+                line(result(), '#39ff14');
+            } else if (result) {
+                line(result, '#39ff14');
+            } else {
+                line("COMMAND NOT FOUND. Try 'help'.", '#ff3333');
+                if (Math.random() < 0.35) flashOracle('UNKNOWN COMMANDS STILL LEAVE FINGERPRINTS');
+            }
+        }
+    });
+</script>
+</body>
+</html>
