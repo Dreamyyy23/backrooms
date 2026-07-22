@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Backchannel - Signal Assembled</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="backrooms.js"></script>
+</head>
+<body class="flicker">
+<div class="vignette"></div>
+
+<main class="container nexus-container">
+    <h1 class="nexus-header" data-ghost="SIGNAL ASSEMBLED">The Door That Listens</h1>
+    <img src="assets/assembled-signal.webp" alt="A doorway cut through reality, assembled from ten cyan echoes and opening onto wet predawn pavement" class="room-image" decoding="async">
+
+    <p>
+        The ten echoes do not form a sentence. They form a witness. Yellow carpet, copied voice, hunted body,
+        buried key, institutional ward, clockless landing, observation slit, receipt vault, terminal carrier, and oath
+        all speak at once—and the maze loses the ability to call you imaginary.
+    </p>
+    <p>
+        A doorway opens without cutting the wall. Beyond it is not daylight. It is a cold night sky, wet pavement,
+        and the sound of one ordinary car passing somewhere far away. The kind of sound that proves a world can
+        continue without performing for you.
+    </p>
+
+    <section class="ritual-card">
+        <h2>FOXPRINT // COHERENT</h2>
+        <p>
+            You did not solve the Backrooms. You made enough of yourself legible that it could no longer keep you.
+            The fox at the threshold turns its head once. Not approval. Recognition.
+        </p>
+        <div class="sigil-lock">ENDING I: THE ASSEMBLED WITNESS // SANITY IS NOT CERTAINTY // ESCAPE IS STILL REAL</div>
+    </section>
+
+    <div class="choices">
+        <a href="index.html?reset=1" data-tag="new loop">&gt; Step outside, then dream the maze again</a>
+        <a href="legend-nexus.html" data-tag="remain">&gt; Stay at the threshold and listen a little longer</a>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!hasCompleteSignal()) {
+            flashOracle('THE DOOR REJECTS AN INCOMPLETE WITNESS');
+            setTimeout(() => { window.location.href = 'office.html'; }, 1800);
+        }
+    });
+</script>
+</body>
+</html>
